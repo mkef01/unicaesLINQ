@@ -1,0 +1,59 @@
+﻿@model IEnumerable<LINQ_Ejemplo.Models.detalleLibro>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.codlibro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.titulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tema)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.editorial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idioma)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.precio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.year)
+        </th>
+        <th></th>
+    </tr>
+    
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.codlibro)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.tema)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.editorial)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.idioma)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.precio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.year)
+            </td>
+        </tr>
+    }
+</table>
