@@ -4,7 +4,7 @@
 }
 
 <h2>Index</h2>
-<table>
+<table class="table table-striped table-dark table-responsive-sm table-responsive-md">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.codlibro)
@@ -27,9 +27,8 @@
         <th>
             @Html.DisplayNameFor(model => model.year)
         </th>
-        <th></th>
     </tr>
-    
+
     @foreach (var item in Model)
     {
         <tr>
