@@ -113,7 +113,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ddlAlumnos.cs" />
     <Compile Include="Models\detalleLibro.cs" />
+    <Compile Include="Models\librosAlumno.cs" />
     <Compile Include="Models\Operacion.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -143,6 +145,8 @@
     <Content Include="Views\Shared\js\bootstrap.bundle.min.js.map" />
     <Content Include="Views\Shared\js\bootstrap.js.map" />
     <Content Include="Views\Shared\js\bootstrap.min.js.map" />
+    <Content Include="Views\Inicio\Alumno.cshtml" />
+    <Content Include="Views\Inicio\alumnoElegido.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
