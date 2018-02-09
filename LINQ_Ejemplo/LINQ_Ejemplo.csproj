@@ -113,14 +113,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ddlAlumnos.cs" />
+    <Compile Include="Models\agregarLibro.cs" />
     <Compile Include="Models\detalleLibro.cs" />
     <Compile Include="Models\librosAlumno.cs" />
+    <Compile Include="Models\modelos.cs" />
     <Compile Include="Models\Operacion.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Operacion.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\radio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +148,7 @@
     <Content Include="Views\Shared\js\bootstrap.js.map" />
     <Content Include="Views\Shared\js\bootstrap.min.js.map" />
     <Content Include="Views\Inicio\Alumno.cshtml" />
-    <Content Include="Views\Inicio\alumnoElegido.cshtml" />
+    <Content Include="Views\Inicio\InsertarLibro.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

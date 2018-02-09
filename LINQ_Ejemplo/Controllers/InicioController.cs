@@ -117,11 +117,76 @@ namespace LINQ_Ejemplo.Controllers
             }
             return alumnosDdl;
         }
+
+        public ActionResult InsertarLibro()
+        {
+            radio modelo = new radio();
+            //
+            var tema = new List<AgregarLibro>();
+            var query = from tem in _context.tematicas
+                select new
+                {
+                    codigo = tem.codtema,
+                    tematica = tem.tema
+                };
+            var lista = query.ToList();
+            foreach (var ddltematica in lista)
+            {
+                tema.Add(new AgregarLibro()
+                {
+                    tematicascod = ddltematica.codigo,
+                    tematicas = ddltematica.tematica
+                });
+            }
+            ViewBag.tema = new SelectList(tema,"tematicascod","tematicas");
+            //
+            var edito = new List<AgregarLibro>();
+            var query2 = from edit in _context.editoriales
+                select new
+                {
+                    codigoedito = edit.codeditorial,
+                    editorialnombre = edit.editorial
+                };
+            var lista2 = query2.ToList();
+            foreach (var ddleditorial in lista2)
+            {
+                edito.Add(new AgregarLibro()
+                {
+                    codeditorial = ddleditorial.codigoedito,
+                    editorialnombre = ddleditorial.editorialnombre
+                });
+            }
+            ViewBag.edito = new SelectList(edito, "codeditorial", "editorialnombre");
+            //
+            var idioma = new List<AgregarLibro>();
+            var query3 = from idio in _context.idiomas
+                select new
+                {
+                    idiomacod = idio.codidioma,
+                    idiomanombre = idio.idioma
+                };
+            var lista3 = query3.ToList();
+            foreach (var ddlidioma in lista3)
+            {
+                idioma.Add(new AgregarLibro()
+                {
+                   idiomacodigo = ddlidioma.idiomacod,
+                   idiomaidioma = ddlidioma.idiomanombre
+                });
+            }
+            ViewBag.idioma = new SelectList(idioma, "idiomacodigo", "idiomaidioma");
+            //
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult InsertarLibro(int tema,int edito,int idioma,int donado)
+        {
+            var a = tema;
+            var b = edito;
+            var c = idioma;
+            int d = donado;
+            return View("Index");
+        }
 	}
 }
-
-
-//select alum.nombre, pre.fechaprestamo, lib.titulo from alumnos alum
-//inner join prestamos pre on alum.codalumno = pre.codalumno
-//inner join ejemplares ejem on ejem.codejemplar = pre.codejemplar
-//inner join libros lib on lib.codlibro = ejem.codlibro where alum.nombre = 'Ana Toledo'
