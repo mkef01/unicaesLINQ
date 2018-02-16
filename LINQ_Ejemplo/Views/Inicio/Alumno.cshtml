@@ -1,0 +1,54 @@
+﻿@model IEnumerable<LINQ_Ejemplo.Models.LibrosAlumno>
+@{
+    ViewBag.Title = "Prestamos por alumno";
+}
+<h2>Comando WHERE (Prestamos por alumnos)</h2>
+
+@using (Html.BeginForm("Alumno", "Inicio", FormMethod.Post, new { @class = "form-group" }))
+{ 
+
+        <div class="input-group mb-3">
+            @Html.DropDownList("seleccion", ViewData["alumnos"] as SelectList, new { @class = "form-control" })
+            <div class="input-group-append">
+                <span>&nbsp;</span>
+                <span>&nbsp;</span>
+                <button type="submit" value="submit" class="btn btn-outline-primary">Buscar</button>
+            </div>
+                <br />
+            <br />
+        </div>
+
+}
+@if (ViewData["autorizar"] != null)
+{
+    <table class="table table-striped table-dark table-responsive-sm table-responsive-md">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Titulo)
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+
