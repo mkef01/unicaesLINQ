@@ -5,14 +5,15 @@ using System.Web;
 
 namespace LINQ_Ejemplo.Models
 {
-    public class detalleLibro
+    public class DetalleLibro
     {
-        public int codlibro { get; set; }
-        public string titulo { get; set; }
-        public string tema { get; set; }
-        public string editorial { get; set; }
-        public string idioma { get; set; }
-        public float precio { get; set; }
-        public int year { get; set; }
+        public int Codlibro { get; set; }
+        public string Titulo { get; set; }
+        public string Tema { get; set; }
+        public string Editorial { get; set; }
+        public string Idioma { get; set; }
+        public float Precio { get; set; }
+        public int Year { get; set; }
+
     }
 }

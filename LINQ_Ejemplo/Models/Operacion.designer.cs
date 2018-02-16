@@ -36,9 +36,9 @@ namespace LINQ_Ejemplo.Models
     partial void Insertprestamos(prestamos instance);
     partial void Updateprestamos(prestamos instance);
     partial void Deleteprestamos(prestamos instance);
-    partial void Insertlibros(detallelibro instance);
-    partial void Updatelibros(detallelibro instance);
-    partial void Deletelibros(detallelibro instance);
+    partial void Insertlibros(libros instance);
+    partial void Updatelibros(libros instance);
+    partial void Deletelibros(libros instance);
     partial void Insertidiomas(idiomas instance);
     partial void Updateidiomas(idiomas instance);
     partial void Deleteidiomas(idiomas instance);
@@ -105,11 +105,11 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<detallelibro> libros
+		public System.Data.Linq.Table<libros> libros
 		{
 			get
 			{
-				return this.GetTable<detallelibro>();
+				return this.GetTable<libros>();
 			}
 		}
 		
@@ -145,14 +145,6 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<autorexlibro> autorexlibro
-		{
-			get
-			{
-				return this.GetTable<autorexlibro>();
-			}
-		}
-		
 		public System.Data.Linq.Table<autores> autores
 		{
 			get
@@ -168,6 +160,28 @@ namespace LINQ_Ejemplo.Models
 				return this.GetTable<alumnos>();
 			}
 		}
+		
+		public System.Data.Linq.Table<autorexlibro> autorexlibro
+		{
+			get
+			{
+				return this.GetTable<autorexlibro>();
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.aloha")]
+		public ISingleResult<alohaResult> aloha()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<alohaResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.insertarAutorxLibro")]
+		public int insertarAutorxLibro([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> libro, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> autor)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), libro, autor);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tematicas")]
@@ -180,7 +194,7 @@ namespace LINQ_Ejemplo.Models
 		
 		private string _tema;
 		
-		private EntitySet<detallelibro> _libros;
+		private EntitySet<libros> _libros;
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnLoaded();
@@ -194,7 +208,7 @@ namespace LINQ_Ejemplo.Models
 		
 		public tematicas()
 		{
-			this._libros = new EntitySet<detallelibro>(new Action<detallelibro>(this.attach_libros), new Action<detallelibro>(this.detach_libros));
+			this._libros = new EntitySet<libros>(new Action<libros>(this.attach_libros), new Action<libros>(this.detach_libros));
 			OnCreated();
 		}
 		
@@ -239,7 +253,7 @@ namespace LINQ_Ejemplo.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tematicas_libros", Storage="_libros", ThisKey="codtema", OtherKey="codtema")]
-		public EntitySet<detallelibro> libros
+		public EntitySet<libros> libros
 		{
 			get
 			{
@@ -271,13 +285,13 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
-		private void attach_libros(detallelibro entity)
+		private void attach_libros(libros entity)
 		{
 			this.SendPropertyChanging();
 			entity.tematicas = this;
 		}
 		
-		private void detach_libros(detallelibro entity)
+		private void detach_libros(libros entity)
 		{
 			this.SendPropertyChanging();
 			entity.tematicas = null;
@@ -549,7 +563,7 @@ namespace LINQ_Ejemplo.Models
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.libros")]
-	public partial class detallelibro : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class libros : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -568,7 +582,7 @@ namespace LINQ_Ejemplo.Models
 		
 		private System.Nullable<int> _year;
 		
-		private System.Nullable<char> _donado;
+		private char _donado;
 		
 		private EntitySet<ejemplares> _ejemplares;
 		
@@ -596,11 +610,11 @@ namespace LINQ_Ejemplo.Models
     partial void OnprecioChanged();
     partial void OnyearChanging(System.Nullable<int> value);
     partial void OnyearChanged();
-    partial void OndonadoChanging(System.Nullable<char> value);
+    partial void OndonadoChanging(char value);
     partial void OndonadoChanged();
     #endregion
 		
-		public detallelibro()
+		public libros()
 		{
 			this._ejemplares = new EntitySet<ejemplares>(new Action<ejemplares>(this.attach_ejemplares), new Action<ejemplares>(this.detach_ejemplares));
 			this._tematicas = default(EntityRef<tematicas>);
@@ -762,7 +776,7 @@ namespace LINQ_Ejemplo.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_donado", DbType="Char(1)")]
-		public System.Nullable<char> donado
+		public char donado
 		{
 			get
 			{
@@ -939,7 +953,7 @@ namespace LINQ_Ejemplo.Models
 		
 		private string _idioma;
 		
-		private EntitySet<detallelibro> _libros;
+		private EntitySet<libros> _libros;
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnLoaded();
@@ -953,7 +967,7 @@ namespace LINQ_Ejemplo.Models
 		
 		public idiomas()
 		{
-			this._libros = new EntitySet<detallelibro>(new Action<detallelibro>(this.attach_libros), new Action<detallelibro>(this.detach_libros));
+			this._libros = new EntitySet<libros>(new Action<libros>(this.attach_libros), new Action<libros>(this.detach_libros));
 			OnCreated();
 		}
 		
@@ -998,7 +1012,7 @@ namespace LINQ_Ejemplo.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="idiomas_libros", Storage="_libros", ThisKey="codidioma", OtherKey="codidioma")]
-		public EntitySet<detallelibro> libros
+		public EntitySet<libros> libros
 		{
 			get
 			{
@@ -1030,13 +1044,13 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
-		private void attach_libros(detallelibro entity)
+		private void attach_libros(libros entity)
 		{
 			this.SendPropertyChanging();
 			entity.idiomas = this;
 		}
 		
-		private void detach_libros(detallelibro entity)
+		private void detach_libros(libros entity)
 		{
 			this.SendPropertyChanging();
 			entity.idiomas = null;
@@ -1173,7 +1187,7 @@ namespace LINQ_Ejemplo.Models
 		
 		private EntityRef<estados> _estados;
 		
-		private EntityRef<detallelibro> _libros;
+		private EntityRef<libros> _libros;
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnLoaded();
@@ -1191,7 +1205,7 @@ namespace LINQ_Ejemplo.Models
 		{
 			this._prestamos = new EntitySet<prestamos>(new Action<prestamos>(this.attach_prestamos), new Action<prestamos>(this.detach_prestamos));
 			this._estados = default(EntityRef<estados>);
-			this._libros = default(EntityRef<detallelibro>);
+			this._libros = default(EntityRef<libros>);
 			OnCreated();
 		}
 		
@@ -1311,7 +1325,7 @@ namespace LINQ_Ejemplo.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="libros_ejemplares", Storage="_libros", ThisKey="codlibro", OtherKey="codlibro", IsForeignKey=true)]
-		public detallelibro libros
+		public libros libros
 		{
 			get
 			{
@@ -1319,7 +1333,7 @@ namespace LINQ_Ejemplo.Models
 			}
 			set
 			{
-				detallelibro previousValue = this._libros.Entity;
+				libros previousValue = this._libros.Entity;
 				if (((previousValue != value) 
 							|| (this._libros.HasLoadedOrAssignedValue == false)))
 				{
@@ -1387,7 +1401,7 @@ namespace LINQ_Ejemplo.Models
 		
 		private string _editorial;
 		
-		private EntitySet<detallelibro> _libros;
+		private EntitySet<libros> _libros;
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnLoaded();
@@ -1401,7 +1415,7 @@ namespace LINQ_Ejemplo.Models
 		
 		public editoriales()
 		{
-			this._libros = new EntitySet<detallelibro>(new Action<detallelibro>(this.attach_libros), new Action<detallelibro>(this.detach_libros));
+			this._libros = new EntitySet<libros>(new Action<libros>(this.attach_libros), new Action<libros>(this.detach_libros));
 			OnCreated();
 		}
 		
@@ -1446,7 +1460,7 @@ namespace LINQ_Ejemplo.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="editoriales_libros", Storage="_libros", ThisKey="codeditorial", OtherKey="codeditorial")]
-		public EntitySet<detallelibro> libros
+		public EntitySet<libros> libros
 		{
 			get
 			{
@@ -1478,61 +1492,16 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
-		private void attach_libros(detallelibro entity)
+		private void attach_libros(libros entity)
 		{
 			this.SendPropertyChanging();
 			entity.editoriales = this;
 		}
 		
-		private void detach_libros(detallelibro entity)
+		private void detach_libros(libros entity)
 		{
 			this.SendPropertyChanging();
 			entity.editoriales = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.autorexlibro")]
-	public partial class autorexlibro
-	{
-		
-		private System.Nullable<int> _codlibro;
-		
-		private System.Nullable<int> _codautor;
-		
-		public autorexlibro()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codlibro", DbType="Int")]
-		public System.Nullable<int> codlibro
-		{
-			get
-			{
-				return this._codlibro;
-			}
-			set
-			{
-				if ((this._codlibro != value))
-				{
-					this._codlibro = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codautor", DbType="Int")]
-		public System.Nullable<int> codautor
-		{
-			get
-			{
-				return this._codautor;
-			}
-			set
-			{
-				if ((this._codautor != value))
-				{
-					this._codautor = value;
-				}
-			}
 		}
 	}
 	
@@ -1781,6 +1750,149 @@ namespace LINQ_Ejemplo.Models
 		{
 			this.SendPropertyChanging();
 			entity.alumnos = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.autorexlibro")]
+	public partial class autorexlibro
+	{
+		
+		private System.Nullable<int> _codlibro;
+		
+		private System.Nullable<int> _codautor;
+		
+		private int _autorxlibro;
+		
+		public autorexlibro()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codlibro", DbType="Int")]
+		public System.Nullable<int> codlibro
+		{
+			get
+			{
+				return this._codlibro;
+			}
+			set
+			{
+				if ((this._codlibro != value))
+				{
+					this._codlibro = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codautor", DbType="Int")]
+		public System.Nullable<int> codautor
+		{
+			get
+			{
+				return this._codautor;
+			}
+			set
+			{
+				if ((this._codautor != value))
+				{
+					this._codautor = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_autorxlibro", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		public int autorxlibro
+		{
+			get
+			{
+				return this._autorxlibro;
+			}
+			set
+			{
+				if ((this._autorxlibro != value))
+				{
+					this._autorxlibro = value;
+				}
+			}
+		}
+	}
+	
+	public partial class alohaResult
+	{
+		
+		private string _codalumno;
+		
+		private string _nombre;
+		
+		private string _telefono;
+		
+		private System.Nullable<int> _numPrestados;
+		
+		public alohaResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codalumno", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string codalumno
+		{
+			get
+			{
+				return this._codalumno;
+			}
+			set
+			{
+				if ((this._codalumno != value))
+				{
+					this._codalumno = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nombre", DbType="VarChar(150)")]
+		public string nombre
+		{
+			get
+			{
+				return this._nombre;
+			}
+			set
+			{
+				if ((this._nombre != value))
+				{
+					this._nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_telefono", DbType="VarChar(9)")]
+		public string telefono
+		{
+			get
+			{
+				return this._telefono;
+			}
+			set
+			{
+				if ((this._telefono != value))
+				{
+					this._telefono = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_numPrestados", DbType="Int")]
+		public System.Nullable<int> numPrestados
+		{
+			get
+			{
+				return this._numPrestados;
+			}
+			set
+			{
+				if ((this._numPrestados != value))
+				{
+					this._numPrestados = value;
+				}
+			}
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace LINQ_Ejemplo.Controllers
         // GET: /Inicio/
         public ActionResult Index()
         {
-            IList<detalleLibro> detalleLista = new List<detalleLibro>();
+            IList<DetalleLibro> detalleLista = new List<DetalleLibro>();
             var query = from bs in _context.libros
                 join ts in _context.tematicas on bs.codtema equals ts.codtema
                 join es in _context.editoriales on bs.codeditorial equals es.codeditorial
@@ -39,15 +39,15 @@ namespace LINQ_Ejemplo.Controllers
             var detalles = query.ToList();
             foreach (var detalleData in detalles)
             {
-                detalleLista.Add(new detalleLibro()
+                detalleLista.Add(new DetalleLibro()
                 {
-                    codlibro = detalleData.Codigo,
-                    titulo = detalleData.Titulo,
-                    tema = detalleData.Tema,
-                    editorial = detalleData.Editorial,
-                    idioma = detalleData.Idioma,
-                    precio = float.Parse(detalleData.Precio.ToString()),
-                    year = detalleData.year.GetValueOrDefault()
+                    Codlibro = detalleData.Codigo,
+                    Titulo = detalleData.Titulo,
+                    Tema = detalleData.Tema,
+                    Editorial = detalleData.Editorial,
+                    Idioma = detalleData.Idioma,
+                    Precio = float.Parse(detalleData.Precio.ToString()),
+                    Year = detalleData.year.GetValueOrDefault()
                 });
             }
 
@@ -120,9 +120,9 @@ namespace LINQ_Ejemplo.Controllers
 
         public ActionResult InsertarLibro()
         {
-            radio modelo = new radio();
+            libros modelo = new libros();
             //
-            var tema = new List<AgregarLibro>();
+            var tema = new List<Dbtemas>();
             var query = from tem in _context.tematicas
                 select new
                 {
@@ -132,15 +132,15 @@ namespace LINQ_Ejemplo.Controllers
             var lista = query.ToList();
             foreach (var ddltematica in lista)
             {
-                tema.Add(new AgregarLibro()
+                tema.Add(new Dbtemas()
                 {
-                    tematicascod = ddltematica.codigo,
-                    tematicas = ddltematica.tematica
+                    Tematicascod = ddltematica.codigo,
+                    Tematicas = ddltematica.tematica
                 });
             }
             ViewBag.tema = new SelectList(tema,"tematicascod","tematicas");
             //
-            var edito = new List<AgregarLibro>();
+            var edito = new List<dbeditoriales>();
             var query2 = from edit in _context.editoriales
                 select new
                 {
@@ -150,15 +150,15 @@ namespace LINQ_Ejemplo.Controllers
             var lista2 = query2.ToList();
             foreach (var ddleditorial in lista2)
             {
-                edito.Add(new AgregarLibro()
+                edito.Add(new dbeditoriales()
                 {
-                    codeditorial = ddleditorial.codigoedito,
-                    editorialnombre = ddleditorial.editorialnombre
+                    Editorialcodigo = ddleditorial.codigoedito,
+                    Editorialnombre = ddleditorial.editorialnombre
                 });
             }
-            ViewBag.edito = new SelectList(edito, "codeditorial", "editorialnombre");
+            ViewBag.edito = new SelectList(edito, "editorialcodigo", "editorialnombre");
             //
-            var idioma = new List<AgregarLibro>();
+            var idioma = new List<dbidiomas>();
             var query3 = from idio in _context.idiomas
                 select new
                 {
@@ -168,25 +168,105 @@ namespace LINQ_Ejemplo.Controllers
             var lista3 = query3.ToList();
             foreach (var ddlidioma in lista3)
             {
-                idioma.Add(new AgregarLibro()
+                idioma.Add(new dbidiomas()
                 {
-                   idiomacodigo = ddlidioma.idiomacod,
-                   idiomaidioma = ddlidioma.idiomanombre
+                   Idiomacodigo = ddlidioma.idiomacod,
+                   Idiomaidioma = ddlidioma.idiomanombre
                 });
             }
             ViewBag.idioma = new SelectList(idioma, "idiomacodigo", "idiomaidioma");
             //
-            return View();
+            var autor = new List<dbautor>();
+            var query4 = from aut in _context.autores
+                select new
+                {
+                    autorCod = aut.codautor,
+                    autorNombre = aut.autor
+                };
+            var lista4 = query4.ToList();
+            foreach (var ddlautor in lista4)
+            {
+                autor.Add(new dbautor()
+                {
+                    codautor = ddlautor.autorCod,
+                    autornombre = ddlautor.autorNombre
+                });
+            }
+            ViewBag.autor = new SelectList(autor, "codautor","autornombre");
+            //
+            ViewData["regresar"] = "nada";
+            return View(modelo);
         }
 
         [HttpPost]
-        public ActionResult InsertarLibro(int tema,int edito,int idioma,int donado)
+        public ActionResult InsertarLibro (int tema,int edito,int idioma,int donado, dblibros datos,int autor)
         {
-            var a = tema;
-            var b = edito;
-            var c = idioma;
-            int d = donado;
-            return View("Index");
+            string sn;
+            char[] don = new char[5];
+            if (donado == 1)
+            {
+                don[1] = 'S';
+            }
+            else
+            {
+                don[1] = 'N';
+            }
+            using (OperacionDataContext objDataContext = new OperacionDataContext())
+            {
+                libros baseDatos = new libros();
+                baseDatos.titulo = datos.Titulo;
+                baseDatos.codtema = tema;
+                baseDatos.codeditorial = edito;
+                baseDatos.codidioma = idioma;
+                baseDatos.precio = datos.Precio;
+                baseDatos.year = datos.Year;
+                baseDatos.donado = don[1];
+                try
+                {
+                    objDataContext.libros.InsertOnSubmit(baseDatos);
+                    objDataContext.SubmitChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                //
+                var libronuevo = new List<libros>();
+                var query = from lib in _context.libros
+                            where lib.titulo == datos.Titulo
+                    select new
+                    {
+                        codlibro = lib.codlibro
+                    };
+                var lista = query.ToList();
+                int[] codigo = new int[10];
+                foreach (var libro in lista)
+                {
+                    codigo[0] = libro.codlibro;
+                }
+                try
+                {
+                  var queryproc = objDataContext.insertarAutorxLibro(codigo[0], autor);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+                ViewData["regresar"] = "index";
+            }
+            return View();
         }
 	}
 }
+//var nom = new List<LibrosAlumno>();
+//var query = _context.aloha();
+//var lista = query.ToList();
+//foreach (var ls in lista)
+//{
+//    nom.Add(new LibrosAlumno()
+//    {
+//      Nombre = ls.nombre
+//    });
+//}

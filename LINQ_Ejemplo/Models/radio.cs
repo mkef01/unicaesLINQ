@@ -5,11 +5,11 @@ using System.Web;
 
 namespace LINQ_Ejemplo.Models
 {
-    public class radio
+    public class Radio
     {
-        public char donado { get; set; }
-        public string titulo { get; set; }
-        public decimal precio { get; set; }
-        public int year { get; set; }
+        public char Donado { get; set; }
+        public string Titulo { get; set; }
+        public decimal Precio { get; set; }
+        public int Year { get; set; }
     }
 }

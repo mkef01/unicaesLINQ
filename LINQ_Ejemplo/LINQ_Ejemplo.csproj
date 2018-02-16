@@ -113,16 +113,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\agregarLibro.cs" />
+    <Compile Include="Models\dbautor.cs" />
+    <Compile Include="Models\dbeditoriales.cs" />
+    <Compile Include="Models\dbidiomas.cs" />
+    <Compile Include="Models\dblibros.cs" />
     <Compile Include="Models\detalleLibro.cs" />
     <Compile Include="Models\librosAlumno.cs" />
-    <Compile Include="Models\modelos.cs" />
+    <Compile Include="Models\Operacion.cs">
+      <DependentUpon>Operacion.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Operacion.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Operacion.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\radio.cs" />
+    <Compile Include="Models\dbtemas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
