@@ -258,15 +258,31 @@ namespace LINQ_Ejemplo.Controllers
             }
             return View();
         }
+
+        public ActionResult VerAlumnos()
+        {
+            IList<alumnos> listaAlumnos = new List<alumnos>();
+            var query = from alum in _context.alumnos
+                select new
+                {
+                    codalumno = alum.codalumno,
+                    nombre = alum.codalumno,
+                    telefo = alum.telefono,
+                    prestados = alum.numPrestados
+                };
+            var lista = query.ToList();
+            foreach (var listalum in lista)
+            {
+                listaAlumnos.Add(new alumnos()
+                {
+                   codalumno = listalum.codalumno,
+                   nombre = listalum.nombre,
+                   telefono = listalum.telefo,
+                   numPrestados = listalum.prestados
+                });
+            }
+            return View(listaAlumnos);
+        }
+
 	}
 }
-//var nom = new List<LibrosAlumno>();
-//var query = _context.aloha();
-//var lista = query.ToList();
-//foreach (var ls in lista)
-//{
-//    nom.Add(new LibrosAlumno()
-//    {
-//      Nombre = ls.nombre
-//    });
-//}

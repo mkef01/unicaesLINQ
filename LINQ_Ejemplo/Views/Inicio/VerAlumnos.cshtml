@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LINQ_Ejemplo.Models.alumnos>
+@{
+    ViewBag.Title = "VerAlumnos";
+}
+
+<h2>VerAlumnos</h2>
+
+<table class="table table-striped table-dark table-responsive-sm table-responsive-md">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.codalumno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.telefono)
+        </th>
+        <th>
+            Libros Prestados
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.codalumno)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.numPrestados)
+            </td>
+        </tr>
+    }
+</table>

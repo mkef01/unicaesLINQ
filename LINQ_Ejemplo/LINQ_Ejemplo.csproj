@@ -157,6 +157,7 @@
     <Content Include="Views\Shared\js\bootstrap.js.map" />
     <Content Include="Views\Shared\js\bootstrap.min.js.map" />
     <Content Include="Views\Inicio\InsertarLibro.cshtml" />
+    <Content Include="Views\Inicio\VerAlumnos.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
