@@ -30,7 +30,7 @@
       <Column Name="year" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="donado" Type="System.Char" DbType="Char(1)" CanBeNull="false" />
       <Association Name="libros_ejemplares" Member="ejemplares" ThisKey="codlibro" OtherKey="codlibro" Type="ejemplares" />
-      <Association Name="libros_autorexlibro1" Member="autorexlibro" ThisKey="codlibro" OtherKey="codlibro" Type="autorexlibro" />
+      <Association Name="libros_autorexlibro" Member="autorexlibro" ThisKey="codlibro" OtherKey="codlibro" Type="autorexlibro" />
       <Association Name="tematicas_libros" Member="tematicas" ThisKey="codtema" OtherKey="codtema" Type="tematicas" IsForeignKey="true" />
       <Association Name="idiomas_libros" Member="idiomas" ThisKey="codidioma" OtherKey="codidioma" Type="idiomas" IsForeignKey="true" />
       <Association Name="editoriales_libros" Member="editoriales" ThisKey="codeditorial" OtherKey="codeditorial" Type="editoriales" IsForeignKey="true" />
@@ -71,7 +71,7 @@
     <Type Name="autores">
       <Column Name="codautor" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="autor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Association Name="autores_autorexlibro1" Member="autorexlibro" ThisKey="codautor" OtherKey="codautor" Type="autorexlibro" />
+      <Association Name="autores_autorexlibro" Member="autorexlibro" ThisKey="codautor" OtherKey="codautor" Type="autorexlibro" />
     </Type>
   </Table>
   <Table Name="dbo.alumnos" Member="alumnos">
@@ -88,18 +88,16 @@
       <Column Name="codlibro" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="codautor" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="autorxlibro" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
-      <Association Name="autores_autorexlibro1" Member="autores" ThisKey="codautor" OtherKey="codautor" Type="autores" IsForeignKey="true" />
-      <Association Name="libros_autorexlibro1" Member="libros" ThisKey="codlibro" OtherKey="codlibro" Type="libros" IsForeignKey="true" />
+      <Association Name="autores_autorexlibro" Member="autores" ThisKey="codautor" OtherKey="codautor" Type="autores" IsForeignKey="true" />
+      <Association Name="libros_autorexlibro" Member="libros" ThisKey="codlibro" OtherKey="codlibro" Type="libros" IsForeignKey="true" />
     </Type>
   </Table>
-  <Function Name="dbo.aloha" Method="aloha">
-    <ElementType Name="alohaResult">
-      <Column Name="codalumno" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="nombre" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
-      <Column Name="telefono" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
-      <Column Name="numPrestados" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </ElementType>
-  </Function>
+  <Table Name="dbo.VistaxAutores" Member="VistaxAutores">
+    <Type Name="VistaxAutores">
+      <Column Name="autor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="titulo" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.insertarAutorxLibro" Method="insertarAutorxLibro">
     <Parameter Name="libro" Type="System.Int32" DbType="Int" />
     <Parameter Name="autor" Type="System.Int32" DbType="Int" />

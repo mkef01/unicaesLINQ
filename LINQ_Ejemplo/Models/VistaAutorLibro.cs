@@ -5,9 +5,9 @@ using System.Web;
 
 namespace LINQ_Ejemplo.Models
 {
-    public class Dbtemas
+    public class VistaAutorLibro
     {
-        public int Tematicascod { get; set; }
-        public string Tematicas { get; set; }
+        public string autor { get; set; }
+        public string titulo { get; set; }
     }
 }

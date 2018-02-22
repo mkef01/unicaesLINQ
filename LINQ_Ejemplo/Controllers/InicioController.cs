@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -18,7 +19,6 @@ namespace LINQ_Ejemplo.Controllers
             _context = new OperacionDataContext();
         }
 
-        // GET: /Inicio/
         public ActionResult Index()
         {
             IList<DetalleLibro> detalleLista = new List<DetalleLibro>();
@@ -122,7 +122,7 @@ namespace LINQ_Ejemplo.Controllers
         {
             libros modelo = new libros();
             //
-            var tema = new List<Dbtemas>();
+            var tema = new List<tematicas>();
             var query = from tem in _context.tematicas
                 select new
                 {
@@ -132,15 +132,15 @@ namespace LINQ_Ejemplo.Controllers
             var lista = query.ToList();
             foreach (var ddltematica in lista)
             {
-                tema.Add(new Dbtemas()
+                tema.Add(new tematicas()
                 {
-                    Tematicascod = ddltematica.codigo,
-                    Tematicas = ddltematica.tematica
+                    codtema = ddltematica.codigo,
+                    tema = ddltematica.tematica
                 });
             }
-            ViewBag.tema = new SelectList(tema,"tematicascod","tematicas");
+            ViewBag.tema = new SelectList(tema,"codtema","tema");
             //
-            var edito = new List<dbeditoriales>();
+            var edito = new List<editoriales>();
             var query2 = from edit in _context.editoriales
                 select new
                 {
@@ -150,15 +150,15 @@ namespace LINQ_Ejemplo.Controllers
             var lista2 = query2.ToList();
             foreach (var ddleditorial in lista2)
             {
-                edito.Add(new dbeditoriales()
+                edito.Add(new editoriales()
                 {
-                    Editorialcodigo = ddleditorial.codigoedito,
-                    Editorialnombre = ddleditorial.editorialnombre
+                    codeditorial = ddleditorial.codigoedito,
+                    editorial = ddleditorial.editorialnombre
                 });
             }
-            ViewBag.edito = new SelectList(edito, "editorialcodigo", "editorialnombre");
+            ViewBag.edito = new SelectList(edito, "codeditorial", "editorial");
             //
-            var idioma = new List<dbidiomas>();
+            var idioma = new List<idiomas>();
             var query3 = from idio in _context.idiomas
                 select new
                 {
@@ -168,15 +168,15 @@ namespace LINQ_Ejemplo.Controllers
             var lista3 = query3.ToList();
             foreach (var ddlidioma in lista3)
             {
-                idioma.Add(new dbidiomas()
+                idioma.Add(new idiomas()
                 {
-                   Idiomacodigo = ddlidioma.idiomacod,
-                   Idiomaidioma = ddlidioma.idiomanombre
+                   codidioma = ddlidioma.idiomacod,
+                   idioma = ddlidioma.idiomanombre
                 });
             }
-            ViewBag.idioma = new SelectList(idioma, "idiomacodigo", "idiomaidioma");
+            ViewBag.idioma = new SelectList(idioma, "codidioma", "idioma");
             //
-            var autor = new List<dbautor>();
+            var autor = new List<autores>();
             var query4 = from aut in _context.autores
                 select new
                 {
@@ -186,20 +186,20 @@ namespace LINQ_Ejemplo.Controllers
             var lista4 = query4.ToList();
             foreach (var ddlautor in lista4)
             {
-                autor.Add(new dbautor()
+                autor.Add(new autores()
                 {
                     codautor = ddlautor.autorCod,
-                    autornombre = ddlautor.autorNombre
+                    autor = ddlautor.autorNombre
                 });
             }
-            ViewBag.autor = new SelectList(autor, "codautor","autornombre");
+            ViewBag.autor = new SelectList(autor, "codautor","autor");
             //
             ViewData["regresar"] = "nada";
             return View(modelo);
         }
 
         [HttpPost]
-        public ActionResult InsertarLibro (int tema,int edito,int idioma,int donado, dblibros datos,int autor)
+        public ActionResult InsertarLibro (int tema,int edito,int idioma,int donado, libros datos,int autor)
         {
             string sn;
             char[] don = new char[5];
@@ -213,17 +213,13 @@ namespace LINQ_Ejemplo.Controllers
             }
             using (OperacionDataContext objDataContext = new OperacionDataContext())
             {
-                libros baseDatos = new libros();
-                baseDatos.titulo = datos.Titulo;
-                baseDatos.codtema = tema;
-                baseDatos.codeditorial = edito;
-                baseDatos.codidioma = idioma;
-                baseDatos.precio = datos.Precio;
-                baseDatos.year = datos.Year;
-                baseDatos.donado = don[1];
+                datos.codtema = tema;
+                datos.codeditorial = edito;
+                datos.codidioma = idioma;
+                datos.donado = don[1];
                 try
                 {
-                    objDataContext.libros.InsertOnSubmit(baseDatos);
+                    objDataContext.libros.InsertOnSubmit(datos);
                     objDataContext.SubmitChanges();
                 }
                 catch (Exception e)
@@ -234,16 +230,16 @@ namespace LINQ_Ejemplo.Controllers
                 //
                 var libronuevo = new List<libros>();
                 var query = from lib in _context.libros
-                            where lib.titulo == datos.Titulo
+                            where lib.titulo == datos.titulo
                     select new
                     {
-                        codlibro = lib.codlibro
+                        cod = lib.codlibro
                     };
                 var lista = query.ToList();
                 int[] codigo = new int[10];
                 foreach (var libro in lista)
                 {
-                    codigo[0] = libro.codlibro;
+                    codigo[0] = libro.cod;
                 }
                 try
                 {
@@ -265,8 +261,8 @@ namespace LINQ_Ejemplo.Controllers
             var query = from alum in _context.alumnos
                 select new
                 {
-                    codalumno = alum.codalumno,
-                    nombre = alum.codalumno,
+                    codigo = alum.codalumno,
+                    nom = alum.nombre,
                     telefo = alum.telefono,
                     prestados = alum.numPrestados
                 };
@@ -275,13 +271,58 @@ namespace LINQ_Ejemplo.Controllers
             {
                 listaAlumnos.Add(new alumnos()
                 {
-                   codalumno = listalum.codalumno,
-                   nombre = listalum.nombre,
+                   codalumno = listalum.codigo,
+                   nombre = listalum.nom,
                    telefono = listalum.telefo,
                    numPrestados = listalum.prestados
                 });
             }
             return View(listaAlumnos);
+        }
+
+        public ActionResult HistorialPrestamos()
+        {
+            IList<Historial> listHistorial = new List<Historial>();
+            var query = from alumnose in _context.alumnos
+                join prestamose in _context.prestamos on alumnose.codalumno equals prestamose.codalumno
+                group new {alumnose, prestamose} by new {alumnose.nombre}
+                into grop orderby grop.Count() descending 
+                select new
+                {
+                    _Nombre = grop.Key.nombre,
+                    _Cantidad = grop.Count()
+                };
+            var lista = query.ToList();
+            foreach (var item in lista)
+            {
+                listHistorial.Add(new Historial()
+                {
+                    Nombre = item._Nombre,
+                    prestamos = item._Cantidad
+                });
+            }
+            return View(listHistorial);
+        }
+
+        public ActionResult Autores()
+        {
+           IList<VistaxAutores> listaAutorexlibros = new List<VistaxAutores>();
+            var query = from aux in _context.VistaxAutores
+                select new
+                {
+                    Au = aux.autor,
+                    lib = aux.titulo
+                };
+            var lista = query.ToList();
+            foreach (var item in lista)
+            {
+                listaAutorexlibros.Add(new VistaxAutores()
+                {
+                   autor = item.Au,
+                   titulo = item.lib
+                });
+            }
+            return View(listaAutorexlibros);
         }
 
 	}

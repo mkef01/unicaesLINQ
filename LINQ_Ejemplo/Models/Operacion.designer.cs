@@ -169,11 +169,12 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.aloha")]
-		public ISingleResult<alohaResult> aloha()
+		public System.Data.Linq.Table<VistaxAutores> VistaxAutores
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((ISingleResult<alohaResult>)(result.ReturnValue));
+			get
+			{
+				return this.GetTable<VistaxAutores>();
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.insertarAutorxLibro")]
@@ -1816,81 +1817,46 @@ namespace LINQ_Ejemplo.Models
 		}
 	}
 	
-	public partial class alohaResult
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.VistaxAutores")]
+	public partial class VistaxAutores
 	{
 		
-		private string _codalumno;
+		private string _autor;
 		
-		private string _nombre;
+		private string _titulo;
 		
-		private string _telefono;
-		
-		private System.Nullable<int> _numPrestados;
-		
-		public alohaResult()
+		public VistaxAutores()
 		{
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codalumno", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string codalumno
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_autor", DbType="VarChar(50)")]
+		public string autor
 		{
 			get
 			{
-				return this._codalumno;
+				return this._autor;
 			}
 			set
 			{
-				if ((this._codalumno != value))
+				if ((this._autor != value))
 				{
-					this._codalumno = value;
+					this._autor = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nombre", DbType="VarChar(150)")]
-		public string nombre
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_titulo", DbType="VarChar(150)")]
+		public string titulo
 		{
 			get
 			{
-				return this._nombre;
+				return this._titulo;
 			}
 			set
 			{
-				if ((this._nombre != value))
+				if ((this._titulo != value))
 				{
-					this._nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_telefono", DbType="VarChar(9)")]
-		public string telefono
-		{
-			get
-			{
-				return this._telefono;
-			}
-			set
-			{
-				if ((this._telefono != value))
-				{
-					this._telefono = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_numPrestados", DbType="Int")]
-		public System.Nullable<int> numPrestados
-		{
-			get
-			{
-				return this._numPrestados;
-			}
-			set
-			{
-				if ((this._numPrestados != value))
-				{
-					this._numPrestados = value;
+					this._titulo = value;
 				}
 			}
 		}

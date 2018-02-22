@@ -116,11 +116,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\dbautor.cs" />
-    <Compile Include="Models\dbeditoriales.cs" />
-    <Compile Include="Models\dbidiomas.cs" />
-    <Compile Include="Models\dblibros.cs" />
     <Compile Include="Models\detalleLibro.cs" />
+    <Compile Include="Models\Historial.cs" />
     <Compile Include="Models\librosAlumno.cs" />
     <Compile Include="Models\Operacion.cs">
       <DependentUpon>Operacion.dbml</DependentUpon>
@@ -130,8 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Operacion.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Models\radio.cs" />
-    <Compile Include="Models\dbtemas.cs" />
+    <Compile Include="Models\VistaAutorLibro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +154,8 @@
     <Content Include="Views\Shared\js\bootstrap.min.js.map" />
     <Content Include="Views\Inicio\InsertarLibro.cshtml" />
     <Content Include="Views\Inicio\VerAlumnos.cshtml" />
+    <Content Include="Views\Inicio\HistorialPrestamos.cshtml" />
+    <Content Include="Views\Inicio\Autores.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

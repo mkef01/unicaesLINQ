@@ -1,0 +1,29 @@
+﻿@model IEnumerable<LINQ_Ejemplo.Models.Historial>
+@{
+    ViewBag.Title = "HistorialPrestamos";
+}
+
+<h2>Historia lPrestamos</h2>
+<table class="table table-striped table-dark table-responsive-sm table-responsive-md">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.prestamos)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.prestamos)
+            </td>
+        </tr>
+    }
+</table>
+

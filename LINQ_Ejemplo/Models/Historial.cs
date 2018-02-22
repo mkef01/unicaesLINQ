@@ -5,9 +5,9 @@ using System.Web;
 
 namespace LINQ_Ejemplo.Models
 {
-    public class dbautor
+    public class Historial
     {
-        public int codautor { get; set; }
-        public string autornombre { get; set; }
+        public string Nombre { get; set; }
+        public int prestamos { get; set; }
     }
 }
