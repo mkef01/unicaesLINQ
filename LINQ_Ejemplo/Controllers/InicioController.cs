@@ -16,26 +16,35 @@ namespace LINQ_Ejemplo.Controllers
 
         public InicioController()
         {
+            //Se inicia el modulo LINQ en modo solo lectura para recuperar los datos
             _context = new OperacionDataContext();
         }
 
         public ActionResult Index()
         {
-            IList<DetalleLibro> detalleLista = new List<DetalleLibro>();
-            var query = from bs in _context.libros
-                join ts in _context.tematicas on bs.codtema equals ts.codtema
-                join es in _context.editoriales on bs.codeditorial equals es.codeditorial
-                join idi in _context.idiomas on bs.codidioma equals idi.codidioma
+            //Consulta SQL de mas de una tabla
+            IList<DetalleLibro> detalleLista = new List<DetalleLibro>(); // se especifica el modelo de datos
+            var query = from li in _context.libros
+                join te in _context.tematicas on li.codtema equals te.codtema
+                join edit in _context.editoriales on li.codeditorial equals edit.codeditorial
+                join idi in _context.idiomas on li.codidioma equals idi.codidioma
                 select new
                 {
-                    Codigo = bs.codlibro,
-                    Titulo = bs.titulo,
-                    Tema = ts.tema,
-                    Editorial = es.editorial,
+                    Codigo = li.codlibro,
+                    Titulo = li.titulo,
+                    Tema = te.tema,
+                    Editorial = edit.editorial,
                     Idioma = idi.idioma,
-                    Precio = bs.precio,
-                    year = bs.year
+                    Precio = li.precio,
+                    year = li.year
                 };
+            //Consulta SQL: 
+            //select 
+            //li.codlibro,li.titulo,te.tema,edit.editorial,idi.idioma,li.precio,li.year
+            //    from libros li
+            //inner join tematicas te on li.codtema = te.codtema
+            //inner join editoriales edit on li.codeditorial = edit.codeditorial
+            //inner join idiomas idi on li.codidioma = idi.codidioma
             var detalles = query.ToList();
             foreach (var detalleData in detalles)
             {
@@ -50,7 +59,7 @@ namespace LINQ_Ejemplo.Controllers
                     Year = detalleData.year.GetValueOrDefault()
                 });
             }
-
+            //luego cargamos los valores dentro del modelo de datos y lo enviamos
             return View(detalleLista);
         }
 
@@ -66,6 +75,7 @@ namespace LINQ_Ejemplo.Controllers
         [HttpPost]
         public ActionResult Alumno(string seleccion)
         {
+            //Comando where
             var idi = seleccion;
             var lista = DdlAlumnos();
             var list = new SelectList(lista, "codigo", "nombre");
@@ -82,6 +92,11 @@ namespace LINQ_Ejemplo.Controllers
                     Fecha = pre.fechaprestamo,
                     Libro = lib.titulo
                 };
+            //select alum.nombre, pre.fechaprestamo, lib.titulo from alumnos alum
+            //inner join prestamos pre on alum.codalumno = pre.codalumno
+            //inner join ejemplares ejem on ejem.codejemplar = pre.codejemplar
+            //inner join libros lib on lib.codlibro = ejem.codlibro 
+            //where alum.codalumno = '122311'
             var listado = query.ToList();
             foreach (var listaEstudiante in listado)
             {
@@ -106,6 +121,8 @@ namespace LINQ_Ejemplo.Controllers
                     Nombre = alum.nombre,
                     Codigo = alum.codalumno
                 };
+            //Consulta SQL:
+            //select nombre,codalumno from alumnos;
             var lista = query.ToList();
             foreach (var ddlLista in lista)
             {
@@ -129,6 +146,7 @@ namespace LINQ_Ejemplo.Controllers
                     codigo = tem.codtema,
                     tematica = tem.tema
                 };
+            //select codtema,tema from tematicas;
             var lista = query.ToList();
             foreach (var ddltematica in lista)
             {
@@ -138,7 +156,7 @@ namespace LINQ_Ejemplo.Controllers
                     tema = ddltematica.tematica
                 });
             }
-            ViewBag.tema = new SelectList(tema,"codtema","tema");
+            ViewBag.tema = tema;
             //
             var edito = new List<editoriales>();
             var query2 = from edit in _context.editoriales
@@ -156,7 +174,7 @@ namespace LINQ_Ejemplo.Controllers
                     editorial = ddleditorial.editorialnombre
                 });
             }
-            ViewBag.edito = new SelectList(edito, "codeditorial", "editorial");
+            ViewBag.edito = edito;
             //
             var idioma = new List<idiomas>();
             var query3 = from idio in _context.idiomas
@@ -174,7 +192,7 @@ namespace LINQ_Ejemplo.Controllers
                    idioma = ddlidioma.idiomanombre
                 });
             }
-            ViewBag.idioma = new SelectList(idioma, "codidioma", "idioma");
+            ViewBag.idioma = idioma;
             //
             var autor = new List<autores>();
             var query4 = from aut in _context.autores
@@ -192,16 +210,15 @@ namespace LINQ_Ejemplo.Controllers
                     autor = ddlautor.autorNombre
                 });
             }
-            ViewBag.autor = new SelectList(autor, "codautor","autor");
+            ViewBag.autor = autor;
             //
             ViewData["regresar"] = "nada";
             return View(modelo);
         }
 
         [HttpPost]
-        public ActionResult InsertarLibro (int tema,int edito,int idioma,int donado, libros datos,int autor)
+        public ActionResult InsertarLibro (int donado, libros datos)
         {
-            string sn;
             char[] don = new char[5];
             if (donado == 1)
             {
@@ -211,14 +228,13 @@ namespace LINQ_Ejemplo.Controllers
             {
                 don[1] = 'N';
             }
+            int autor = datos.codlibro;
             using (OperacionDataContext objDataContext = new OperacionDataContext())
             {
-                datos.codtema = tema;
-                datos.codeditorial = edito;
-                datos.codidioma = idioma;
                 datos.donado = don[1];
                 try
                 {
+                    //Comando Insert
                     objDataContext.libros.InsertOnSubmit(datos);
                     objDataContext.SubmitChanges();
                 }
@@ -243,6 +259,7 @@ namespace LINQ_Ejemplo.Controllers
                 }
                 try
                 {
+                    //Se ejecuta el procedimiento almacenado
                   var queryproc = objDataContext.insertarAutorxLibro(codigo[0], autor);
                 }
                 catch (Exception e)
@@ -266,6 +283,7 @@ namespace LINQ_Ejemplo.Controllers
                     telefo = alum.telefono,
                     prestados = alum.numPrestados
                 };
+            // equivalente al select * from alumnos;
             var lista = query.ToList();
             foreach (var listalum in lista)
             {
@@ -282,6 +300,7 @@ namespace LINQ_Ejemplo.Controllers
 
         public ActionResult HistorialPrestamos()
         {
+            //Funciones de agregado count, group by y order by
             IList<Historial> listHistorial = new List<Historial>();
             var query = from alumnose in _context.alumnos
                 join prestamose in _context.prestamos on alumnose.codalumno equals prestamose.codalumno
@@ -292,6 +311,9 @@ namespace LINQ_Ejemplo.Controllers
                     _Nombre = grop.Key.nombre,
                     _Cantidad = grop.Count()
                 };
+            //select alum.nombre,count(pre.codprestamo) from alumnos alum
+            //join prestamos pre on alum.codalumno = pre.codalumno
+            //group by alum.nombre;
             var lista = query.ToList();
             foreach (var item in lista)
             {
@@ -306,6 +328,7 @@ namespace LINQ_Ejemplo.Controllers
 
         public ActionResult Autores()
         {
+            //Llamar a una vista
            IList<VistaxAutores> listaAutorexlibros = new List<VistaxAutores>();
             var query = from aux in _context.VistaxAutores
                 select new
@@ -325,5 +348,120 @@ namespace LINQ_Ejemplo.Controllers
             return View(listaAutorexlibros);
         }
 
+        public ActionResult ModificarAlumno()
+        {
+            alumnos alumno = new alumnos();
+            var listAlumnos = new List<alumnos>();
+            var query = from alum in _context.alumnos
+                select new
+                {
+                    cod = alum.codalumno,
+                    nom = alum.nombre
+                };
+            var lista = query.ToList();
+            foreach (var item in lista)
+            {
+                listAlumnos.Add(new alumnos()
+                {
+                    codalumno = item.cod,
+                    nombre = item.nom,
+                });
+            }
+            ViewBag.alumnos = listAlumnos;
+            return View(alumno);
+        }
+
+        [HttpPost]
+        public ActionResult ModificarAlumno(string nuevo, alumnos datosAlumnos)
+        {
+                //Comando Update
+                OperacionDataContext objDataContext = new OperacionDataContext();
+                alumnos alum = objDataContext.alumnos.Single(x => x.codalumno == datosAlumnos.codalumno);
+                alum.telefono = nuevo;
+                try
+                {
+                    objDataContext.SubmitChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult BorrarAlumno()
+        {
+            alumnos alumno = new alumnos();
+            var listAlumnos = new List<alumnos>();
+            var query = from alum in _context.alumnos
+                select new
+                {
+                    cod = alum.codalumno,
+                    nom = alum.nombre
+                };
+            var lista = query.ToList();
+            foreach (var item in lista)
+            {
+                listAlumnos.Add(new alumnos()
+                {
+                    codalumno = item.cod,
+                    nombre = item.nom,
+                });
+            }
+            ViewBag.alumnos = listAlumnos;
+            return View(alumno);
+        }
+
+        [HttpPost]
+        public ActionResult BorrarAlumno(alumnos objAlumnos)
+        {
+            //comando delete
+            try
+            {
+                OperacionDataContext objDataContext = new OperacionDataContext();
+                alumnos alum = objDataContext.alumnos.Single(x => x.codalumno == objAlumnos.codalumno);
+                objDataContext.alumnos.DeleteOnSubmit(alum);
+                objDataContext.SubmitChanges();
+            }
+            catch
+            {
+                Console.WriteLine("ERROR");
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ArregloNumeros()
+        {
+            //Usando LINQ sin necesidad de una base de datos (Ejemplo Basico)
+            IList<numeros> nume = new List<numeros>();
+            int[] numeros = new int[51];
+            Random rnd = new Random();
+            for (int i = 0; i < 50; i++)
+            {
+                numeros[i] = rnd.Next(-5000, 5000);
+            }
+
+            var query = from num in numeros
+                where (num % 2) == 0
+                orderby num descending 
+                select new
+                {
+                    n = num
+                };
+
+            var lista = query.ToList();
+
+            foreach (var item in lista)
+            {
+                nume.Add(new numeros()
+                {
+                    num = item.n
+                });
+            }
+
+            return View(nume);
+
+        }
 	}
 }

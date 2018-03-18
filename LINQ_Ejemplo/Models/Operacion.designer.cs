@@ -33,6 +33,9 @@ namespace LINQ_Ejemplo.Models
     partial void Inserttematicas(tematicas instance);
     partial void Updatetematicas(tematicas instance);
     partial void Deletetematicas(tematicas instance);
+    partial void Insertsysdiagrams(sysdiagrams instance);
+    partial void Updatesysdiagrams(sysdiagrams instance);
+    partial void Deletesysdiagrams(sysdiagrams instance);
     partial void Insertprestamos(prestamos instance);
     partial void Updateprestamos(prestamos instance);
     partial void Deleteprestamos(prestamos instance);
@@ -60,7 +63,7 @@ namespace LINQ_Ejemplo.Models
     #endregion
 		
 		public OperacionDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["bibliotecaConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["bibliotecaConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -94,6 +97,14 @@ namespace LINQ_Ejemplo.Models
 			get
 			{
 				return this.GetTable<tematicas>();
+			}
+		}
+		
+		public System.Data.Linq.Table<sysdiagrams> sysdiagrams
+		{
+			get
+			{
+				return this.GetTable<sysdiagrams>();
 			}
 		}
 		
@@ -145,6 +156,14 @@ namespace LINQ_Ejemplo.Models
 			}
 		}
 		
+		public System.Data.Linq.Table<autorexlibro> autorexlibro
+		{
+			get
+			{
+				return this.GetTable<autorexlibro>();
+			}
+		}
+		
 		public System.Data.Linq.Table<autores> autores
 		{
 			get
@@ -158,14 +177,6 @@ namespace LINQ_Ejemplo.Models
 			get
 			{
 				return this.GetTable<alumnos>();
-			}
-		}
-		
-		public System.Data.Linq.Table<autorexlibro> autorexlibro
-		{
-			get
-			{
-				return this.GetTable<autorexlibro>();
 			}
 		}
 		
@@ -296,6 +307,164 @@ namespace LINQ_Ejemplo.Models
 		{
 			this.SendPropertyChanging();
 			entity.tematicas = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.sysdiagrams")]
+	public partial class sysdiagrams : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _name;
+		
+		private int _principal_id;
+		
+		private int _diagram_id;
+		
+		private System.Nullable<int> _version;
+		
+		private System.Data.Linq.Binary _definition;
+		
+    #region Definiciones de métodos de extensibilidad
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void Onprincipal_idChanging(int value);
+    partial void Onprincipal_idChanged();
+    partial void Ondiagram_idChanging(int value);
+    partial void Ondiagram_idChanged();
+    partial void OnversionChanging(System.Nullable<int> value);
+    partial void OnversionChanged();
+    partial void OndefinitionChanging(System.Data.Linq.Binary value);
+    partial void OndefinitionChanged();
+    #endregion
+		
+		public sysdiagrams()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_principal_id", DbType="Int NOT NULL")]
+		public int principal_id
+		{
+			get
+			{
+				return this._principal_id;
+			}
+			set
+			{
+				if ((this._principal_id != value))
+				{
+					this.Onprincipal_idChanging(value);
+					this.SendPropertyChanging();
+					this._principal_id = value;
+					this.SendPropertyChanged("principal_id");
+					this.Onprincipal_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_diagram_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int diagram_id
+		{
+			get
+			{
+				return this._diagram_id;
+			}
+			set
+			{
+				if ((this._diagram_id != value))
+				{
+					this.Ondiagram_idChanging(value);
+					this.SendPropertyChanging();
+					this._diagram_id = value;
+					this.SendPropertyChanged("diagram_id");
+					this.Ondiagram_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_version", DbType="Int")]
+		public System.Nullable<int> version
+		{
+			get
+			{
+				return this._version;
+			}
+			set
+			{
+				if ((this._version != value))
+				{
+					this.OnversionChanging(value);
+					this.SendPropertyChanging();
+					this._version = value;
+					this.SendPropertyChanged("version");
+					this.OnversionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_definition", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary definition
+		{
+			get
+			{
+				return this._definition;
+			}
+			set
+			{
+				if ((this._definition != value))
+				{
+					this.OndefinitionChanging(value);
+					this.SendPropertyChanging();
+					this._definition = value;
+					this.SendPropertyChanged("definition");
+					this.OndefinitionChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -583,7 +752,7 @@ namespace LINQ_Ejemplo.Models
 		
 		private System.Nullable<int> _year;
 		
-		private char _donado;
+		private System.Nullable<char> _donado;
 		
 		private EntitySet<ejemplares> _ejemplares;
 		
@@ -611,7 +780,7 @@ namespace LINQ_Ejemplo.Models
     partial void OnprecioChanged();
     partial void OnyearChanging(System.Nullable<int> value);
     partial void OnyearChanged();
-    partial void OndonadoChanging(char value);
+    partial void OndonadoChanging(System.Nullable<char> value);
     partial void OndonadoChanged();
     #endregion
 		
@@ -777,7 +946,7 @@ namespace LINQ_Ejemplo.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_donado", DbType="Char(1)")]
-		public char donado
+		public System.Nullable<char> donado
 		{
 			get
 			{
@@ -1506,6 +1675,51 @@ namespace LINQ_Ejemplo.Models
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.autorexlibro")]
+	public partial class autorexlibro
+	{
+		
+		private System.Nullable<int> _codlibro;
+		
+		private System.Nullable<int> _codautor;
+		
+		public autorexlibro()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codlibro", DbType="Int")]
+		public System.Nullable<int> codlibro
+		{
+			get
+			{
+				return this._codlibro;
+			}
+			set
+			{
+				if ((this._codlibro != value))
+				{
+					this._codlibro = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codautor", DbType="Int")]
+		public System.Nullable<int> codautor
+		{
+			get
+			{
+				return this._codautor;
+			}
+			set
+			{
+				if ((this._codautor != value))
+				{
+					this._codautor = value;
+				}
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.autores")]
 	public partial class autores : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1751,69 +1965,6 @@ namespace LINQ_Ejemplo.Models
 		{
 			this.SendPropertyChanging();
 			entity.alumnos = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.autorexlibro")]
-	public partial class autorexlibro
-	{
-		
-		private System.Nullable<int> _codlibro;
-		
-		private System.Nullable<int> _codautor;
-		
-		private int _autorxlibro;
-		
-		public autorexlibro()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codlibro", DbType="Int")]
-		public System.Nullable<int> codlibro
-		{
-			get
-			{
-				return this._codlibro;
-			}
-			set
-			{
-				if ((this._codlibro != value))
-				{
-					this._codlibro = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_codautor", DbType="Int")]
-		public System.Nullable<int> codautor
-		{
-			get
-			{
-				return this._codautor;
-			}
-			set
-			{
-				if ((this._codautor != value))
-				{
-					this._codautor = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_autorxlibro", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
-		public int autorxlibro
-		{
-			get
-			{
-				return this._autorxlibro;
-			}
-			set
-			{
-				if ((this._autorxlibro != value))
-				{
-					this._autorxlibro = value;
-				}
-			}
 		}
 	}
 	

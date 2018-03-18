@@ -1,63 +1,71 @@
 ﻿@model LINQ_Ejemplo.Models.libros
 @{
-    ViewBag.Title = "InsertarLibro";
+    ViewBag.Title = "Insertar Libro";
 }
-<h2>Comando Select (Insertar nuevo libro)</h2>
+<h2>Comando Insert con procedimiento Almacenado</h2>
 
 @using (Html.BeginForm("InsertarLibro", "Inicio", FormMethod.Post))
- {
-     if (ViewData["regresar"].ToString() != "index")
-      {
-          <div class="form-group">
-              Titulo:
-              <p></p>
-              @Html.EditorFor(model => model.titulo)
-          </div>
+{
+    if (ViewData["regresar"].ToString() != "index")
+    {
+        @Html.AntiForgeryToken()
+        <form>
+            <div class="form-group">
+                Titulo:
+                <p></p>
+                @Html.TextBoxFor(model => model.titulo,new {@class="form-control"})
+            </div>
 
-          <div class="form-group">
-              Tematica:
-              <p></p>
-              @Html.DropDownList("tema", "Seleccione un tema")
-          </div>
-          <div class="form-group">
-              Editorial:
-              <p></p>
-              @Html.DropDownList("edito", "Seleccione editorial")
-          </div>
-          <div class="form-group">
-              Editorial:
-              <p></p>
-              @Html.DropDownList("idioma", "Seleccione un idioma")
-          </div>
-          <div class="form-group">
-              Autor:
-              <p></p>
-              @Html.DropDownList("autor", "Seleccione un autor")
-          </div>
-          <div class="form-group">
-              precio:
-              <p></p>
-              @Html.EditorFor(model => model.precio)
-          </div>
-          <div class="form-group">
-              Año:
-              <p></p>
-              @Html.EditorFor(model => model.year)
-          </div>
-          <div class="form-group">
-              <fieldset>
-                  @Html.RadioButtonFor(model => model.donado, 1) Si
-                  @Html.RadioButtonFor(model => model.donado, 0) No
-              </fieldset>
-          </div>
-          <button type="submit" class="btn btn-primary" value="submit">Agregar</button>
+            <div class="form-group">
+                Tematica:
+                <p></p>
+                @Html.DropDownListFor(model => model.codtema, new SelectList(ViewBag.tema, "codtema", "tema"),new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                Editorial:
+                <p></p>
+                @Html.DropDownListFor(model => model.codeditorial, new SelectList(ViewBag.edito, "codeditorial", "editorial"), new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                Idioma:
+                <p></p>
+                @Html.DropDownListFor(model => model.codidioma, new SelectList(ViewBag.idioma, "codidioma", "idioma"), new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                Autor:
+                <p></p>
+                @Html.DropDownListFor(model => model.codlibro, new SelectList(ViewBag.autor, "codautor", "autor"), new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                precio:
+                <p></p>
+                @Html.TextBoxFor(model => model.precio,new {@class="form-control"})
+            </div>
+            <div class="form-group">
+                Año:
+                <p></p>
+                @Html.TextBoxFor(model => model.year, new { @class = "form-control" })
+            </div>
+            <div class="form-check">
+                @Html.RadioButtonFor(model => model.donado, 1,new {@class="form-check-input",@checked="checked"})
+                <label class="form-check-label">
+                    Sí
+                </label>
+            </div>
+            <div class="form-check">
+                @Html.RadioButtonFor(model => model.donado, 0,new {@class="form-check-input"})
+                <label class="form-check-label">
+                    No
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" value="submit">Agregar</button>
+        </form>
+    }
 
-      }
-      
-      if (ViewData["regresar"].Equals("index"))
-      {
+    if (ViewData["regresar"].Equals("index"))
+    {
           <div class="alert alert-success" role="alert">
-              El libro se a agregado con exito, Volver a @Html.ActionLink("Inicio", "Index", "Inicio", null)
+              El libro se agregado con exito, Volver a @Html.ActionLink("Inicio", "Index", "Inicio", null)
           </div> 
       }
  }

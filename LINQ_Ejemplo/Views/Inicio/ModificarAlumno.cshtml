@@ -1,0 +1,28 @@
+﻿@model LINQ_Ejemplo.Models.alumnos
+@{
+    ViewBag.Title = "Modificar Alumno";
+}
+
+<h2>Comando Update</h2>
+@using (Html.BeginForm("ModificarAlumno", "Inicio", FormMethod.Post))
+{
+<div class="form-group">
+    <label>Seleccione el alumno</label>
+    @Html.DropDownListFor(model => model.codalumno, new SelectList(ViewBag.alumnos,"codalumno","nombre"), new  { @class = "form-control" })
+</div>
+    <div>
+        <label for="nuevo">Ingrese el nuevo numero de telefono</label>
+        <input id="nuevo" type="text" name="nuevo" data-mask="9999-9999" class="form-control" maxlength="9" onkeypress="return justNumbers(event)"/>
+        <script type="text/javascript">
+            function justNumbers(e) {
+                var keynum = window.event ? window.event.keyCode : e.which;
+                if ((keynum == 8 || keynum == 48))
+                    return true;
+                if (keynum <= 47 || keynum >= 58) return false;
+                return /\d/.test(String.fromCharCode(keynum));
+            }
+        </script>
+        <br/>
+        <button type="submit" class="btn btn-primary" value="submit">Modificar telefono</button>
+    </div>
+}

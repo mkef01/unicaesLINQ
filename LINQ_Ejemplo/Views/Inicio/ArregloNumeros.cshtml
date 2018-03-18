@@ -1,0 +1,23 @@
+﻿@model IEnumerable<LINQ_Ejemplo.Models.numeros>  
+@{
+    ViewBag.Title = "Arreglo Numeros";
+}
+
+<h2>Arreglo con Numeros</h2>
+<table class="table table-striped table-dark table-responsive-sm table-responsive-md align-content-center">
+    <tr class="align-content-center">
+        <th>
+            @Html.DisplayNameFor(model => model.num)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+{
+    <tr class="align-content-center">
+        <td>
+            @Html.DisplayFor(model => item.num)
+        </td>
+    </tr>
+}
+</table>
+
